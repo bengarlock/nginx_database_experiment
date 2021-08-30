@@ -10,6 +10,7 @@ class ResyRestaurant(models.Model):
     url = models.CharField(max_length=3000, blank=True, null=True)
     address = models.CharField(max_length=3000, blank=True, null=True)
     active = models.BooleanField(default=True)
+    group_url = models.CharField(max_length=3000, blank=True, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
