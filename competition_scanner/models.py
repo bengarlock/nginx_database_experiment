@@ -3,6 +3,10 @@ from django.contrib.postgres.fields import ArrayField
 
 
 # Create your models here.
+class ResyGroup(models.Model):
+    name = models.CharField(max_length=3000, blank=True)
+
+
 class ResyRestaurant(models.Model):
     restaurant_name = models.CharField(max_length=3000, blank=True)
     resy_id = models.CharField(max_length=1000, blank=True)
@@ -10,7 +14,7 @@ class ResyRestaurant(models.Model):
     url = models.CharField(max_length=3000, blank=True, null=True)
     address = models.CharField(max_length=3000, blank=True, null=True)
     active = models.BooleanField(default=True)
-    group_url = models.CharField(max_length=3000, blank=True, default=None, null=True)
+    group = models.ForeignKey(ResyGroup, related_name="restaurants", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 

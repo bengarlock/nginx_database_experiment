@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from rest_framework import routers
 from tablehost.views import BookView, SlotView, RestaurantView, GuestView, TableView, StatusView
 from jobapps.views import JobappViewSet
-from competition_scanner.views import ResyRestaurantViewSet, ResyTotalCountViewSet, YelpRestaurantViewSet, YelpTotalCountViewSet
+from competition_scanner.views import ResyRestaurantViewSet, ResyTotalCountViewSet, YelpRestaurantViewSet, YelpTotalCountViewSet, ResyGroupViewSet
 from garden_mate.views import GardenDayViewSet
 from price_scanner.views import PriceVewSet, FavoriteViewSet
 from health_tracker.views import PlayerViewset
@@ -37,6 +37,7 @@ router.register("v1/tablehost/status", StatusView)
 router.register("v1/jobapps", JobappViewSet)
 router.register("v1/resy/restaurants", ResyRestaurantViewSet)
 router.register("v1/resy/totals", ResyTotalCountViewSet)
+router.register("v1/resy/groups", ResyGroupViewSet)
 router.register("v1/yelp/restaurants", YelpRestaurantViewSet)
 router.register("v1/yelp/totals", YelpTotalCountViewSet)
 router.register("v1/garden/days", GardenDayViewSet)
@@ -49,7 +50,6 @@ router.register("v1/image_store", ImageStoreViewset)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    # path('api/v1/tablehost/guests/', GuestView.as_view(), name="guests")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
