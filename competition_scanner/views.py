@@ -8,6 +8,9 @@ import django_filters.rest_framework
 class ResyGroupViewSet(viewsets.ModelViewSet):
     queryset = ResyGroup.objects.all()
     serializer_class = ResyGroupSerializer
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ["name"]
+
 
 
 class ResyRestaurantViewSet(viewsets.ModelViewSet):
