@@ -12,7 +12,7 @@ class ResyGroupSerializer(serializers.ModelSerializer):
     restaurants = ResyRestaurantSerializer(many=True, required=False)
     class Meta:
         model = ResyGroup
-        fields = '__all__'
+        fields = ["id", "name", "url", "restaurants"]
 
 
 class ResyTotalCountSerializer(serializers.ModelSerializer):

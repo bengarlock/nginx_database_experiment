@@ -9,7 +9,7 @@ class ResyGroupViewSet(viewsets.ModelViewSet):
     queryset = ResyGroup.objects.all()
     serializer_class = ResyGroupSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ["name"]
+    filterset_fields = ["name", "url"]
 
 
 
@@ -21,7 +21,7 @@ class ResyRestaurantViewSet(viewsets.ModelViewSet):
     queryset = ResyRestaurant.objects.all()
     serializer_class = ResyRestaurantSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ["resy_id", "created_at", "restaurant_name", "url"]
+    filterset_fields = ["resy_id", "created_at", "name", "url"]
 
 
 class ResyTotalCountViewSet(viewsets.ModelViewSet):
