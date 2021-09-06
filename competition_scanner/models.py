@@ -6,6 +6,8 @@ from django.contrib.postgres.fields import ArrayField
 class ResyGroup(models.Model):
     name = models.CharField(max_length=3000, blank=True)
     url = models.CharField(max_length=3000, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 
 class ResyRestaurant(models.Model):
