@@ -56,3 +56,4 @@ class Status(models.Model):
     label = models.CharField(default='', max_length=1000)
     status_type = models.CharField(default='confirmation', max_length=1000)
     order = models.IntegerField(default=0)
+    display_floor = models.BooleanField(default=True)
