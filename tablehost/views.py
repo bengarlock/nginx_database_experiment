@@ -1,11 +1,9 @@
-
 from rest_framework import viewsets, filters
-from .models import Book, Slot, Restaurant, Guest, Table, Status
+from .models import Book, Slot, Restaurant, Guest, Table, Status, Floor
 from .serializers import BookSerializer, SlotSerializer, RestaurantSerializer, GuestSerializer, TableSerializer, \
-    StatusSerializer
+    StatusSerializer, FloorSerializer
 import django_filters.rest_framework
 from rest_framework.pagination import PageNumberPagination
-
 
 
 class BookView(viewsets.ModelViewSet):
@@ -18,6 +16,11 @@ class BookView(viewsets.ModelViewSet):
 class SlotView(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
+
+
+class FloorView(viewsets.ModelViewSet):
+    queryset = Floor.objects.all()
+    serializer_class = FloorSerializer
 
 
 class RestaurantView(viewsets.ModelViewSet):

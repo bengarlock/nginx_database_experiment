@@ -32,21 +32,27 @@ class Slot(models.Model):
     party_size = models.IntegerField(default=0)
     status = models.TextField(blank=True)
     reservation_notes = models.TextField(blank=True)
-    tables = ArrayField(models.CharField(max_length=15), default=list, blank=True)
+    # tables = ArrayField(models.CharField(max_length=15), default=list, blank=True)
     book = models.ForeignKey(Book, related_name="slots", on_delete=models.CASCADE)
     guest = models.ForeignKey(Guest, related_name="guest", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 
+class Floor(models.Model):
+    book = models.ForeignKey(Book, related_name="floors", on_delete=models.SET_NULL, null=True)
+    name = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
+
+
 class Table(models.Model):
+    floor = models.ForeignKey(Floor, related_name='tables', on_delete=models.CASCADE, null=True)
     class_name = models.TextField(default="two-top-horizontal")
     position_left = models.TextField(default="0px")
     position_top = models.TextField(default="0px")
     name = models.TextField(blank=True)
-    restaurant_id = models.IntegerField(default=1, blank=True)
-    status = models.TextField(default='done')
-    reservation_id = models.IntegerField(blank=True, default=1)
+    status = models.TextField(default='open')
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 

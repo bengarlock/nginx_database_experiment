@@ -18,9 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-from tablehost.views import BookView, SlotView, RestaurantView, GuestView, TableView, StatusView
+from tablehost.views import BookView, SlotView, RestaurantView, GuestView, TableView, StatusView, FloorView
 from jobapps.views import JobappViewSet
-from competition_scanner.views import ResyRestaurantViewSet, ResyTotalCountViewSet, YelpRestaurantViewSet, YelpTotalCountViewSet, ResyGroupViewSet
+from competition_scanner.views import ResyRestaurantViewSet, ResyTotalCountViewSet, \
+    YelpRestaurantViewSet, YelpTotalCountViewSet, ResyGroupViewSet
 from garden_mate.views import GardenDayViewSet
 from price_scanner.views import PriceVewSet, FavoriteViewSet
 from health_tracker.views import PlayerViewset
@@ -31,9 +32,10 @@ router = routers.DefaultRouter()
 router.register("v1/tablehost/books", BookView)
 router.register("v1/tablehost/slots", SlotView)
 router.register("v1/tablehost/restaurants", RestaurantView)
-router.register("v1/tablehost/guests", GuestView, basename='guests')
+router.register("v1/tablehost/guests", GuestView)
 router.register("v1/tablehost/tables", TableView)
 router.register("v1/tablehost/status", StatusView)
+router.register("v1/tablehost/floors", FloorView)
 router.register("v1/jobapps", JobappViewSet)
 router.register("v1/resy/restaurants", ResyRestaurantViewSet)
 router.register("v1/resy/totals", ResyTotalCountViewSet)
