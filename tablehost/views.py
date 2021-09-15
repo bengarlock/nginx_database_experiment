@@ -43,3 +43,6 @@ class TableView(viewsets.ModelViewSet):
 class StatusView(viewsets.ModelViewSet):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["label"]
+

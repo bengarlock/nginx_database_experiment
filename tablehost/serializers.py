@@ -8,8 +8,15 @@ class GuestSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Status
+        fields = '__all__'
+
+
 class SlotSerializerWithGuest(serializers.ModelSerializer):
     guest = GuestSerializer(required=False)
+    status = StatusSerializer(required=False)
 
     class Meta:
         model = Slot
@@ -50,9 +57,3 @@ class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = ['id', 'name']
-
-
-class StatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Status
-        fields = '__all__'

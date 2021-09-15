@@ -26,15 +26,22 @@ class Restaurant(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 
+class Status(models.Model):
+    color = models.CharField(default='#fff', max_length=1000)
+    name = models.CharField(default='', max_length=1000)
+    status_type = models.CharField(default='confirmation', max_length=1000)
+    order = models.IntegerField(default=0)
+    display_floor = models.BooleanField(default=True)
+
+
 class Slot(models.Model):
     booked = models.BooleanField(default=False)
     time = models.TextField(default="5:00 PM")
     party_size = models.IntegerField(default=0)
-    status = models.TextField(blank=True)
     reservation_notes = models.TextField(blank=True)
-    # tables = ArrayField(models.CharField(max_length=15), default=list, blank=True)
     book = models.ForeignKey(Book, related_name="slots", on_delete=models.CASCADE)
     guest = models.ForeignKey(Guest, related_name="guest", on_delete=models.SET_NULL, null=True)
+    status = models.ForeignKey(Status, related_name="status", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
@@ -55,11 +62,3 @@ class Table(models.Model):
     status = models.TextField(default='open')
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
-
-
-class Status(models.Model):
-    color = models.CharField(default='#fff', max_length=1000)
-    label = models.CharField(default='', max_length=1000)
-    status_type = models.CharField(default='confirmation', max_length=1000)
-    order = models.IntegerField(default=0)
-    display_floor = models.BooleanField(default=True)

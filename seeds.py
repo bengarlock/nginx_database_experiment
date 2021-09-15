@@ -4,7 +4,7 @@ import json
 from faker import Faker
 import random
 
-url = "http://127.0.0.1:8000/api/v1/tablehost/"
+endpoint = "http://127.0.0.1:8000/api/v1/tablehost"
 #url = "https://bengarlock.com/api/v1/tablehost/"
 today = date.today()
 books = []
@@ -20,7 +20,7 @@ def create_root_user():
         "root_user": True,
         "slot": '1',
     }
-    requests.post(url + "guests/", obj)
+    requests.post(f'{endpoint}/guests/', obj)
 
 
 def create_restaurant():
@@ -28,7 +28,7 @@ def create_restaurant():
     obj = {
         "name": 'ilili',
     }
-    requests.post(url + "restaurants/", obj)
+    requests.post(f'{endpoint}/restaurants/', obj)
 
 
 def create_books(date_cap):
@@ -42,7 +42,7 @@ def create_books(date_cap):
             "restaurant_id": 1,
             "slots": [],
         }
-        book = requests.post(url=url + "books/", data=obj)
+        book = requests.post(f'{endpoint}/books/', data=obj)
         r = book.content.decode('UTF-8')
         res = json.loads(r)
         books.append(res["id"])
@@ -72,7 +72,7 @@ def create_slots(array):
                     "book": book_id,
                     "guest": 1
                 }
-                data = requests.post(url + "slots/", data=obj)
+                data = requests.post(f'{endpoint}/slots/', data=obj)
                 print(data.text)
 
 
@@ -106,7 +106,7 @@ def create_guests(data_cap):
             "active": True,
         }
 
-        guest = requests.post(url + "guests/", data=obj)
+        guest = requests.post(f'{endpoint}/guests/', data=obj)
         print(guest.text)
         index += 1
 
@@ -170,8 +170,75 @@ def create_tables():
          "status": "done"},
     ]
     for table in tables:
-        table = requests.post(url + "tables/", data=table)
+        table = requests.post(f'{endpoint}/tables/', data=table)
         print(table.content)
+
+def create_statuses():
+    statuses = [
+        {
+            "name": "Booked",
+            "color": "#050539",
+            "status_type": "reservation",
+            "order": 1,
+            "display_floor": True
+        },
+        {
+            "name": "Confirmed",
+            "color": "#050539",
+            "status_type": "reservation",
+            "order": 2,
+            "display_floor": True
+        },
+        {
+            "name": "Left Message",
+            "color": "#531ea8",
+            "status_type": "reservation",
+            "order": 3,
+            "display_floor": True
+        },
+        {
+            "name": "Wrong Number",
+            "color": "#531ea8",
+            "status_type": "reservation",
+            "order": 4,
+            "display_floor": True
+        },
+        {
+            "name": "Late",
+            "color": "#531ea8",
+            "status_type": "reservation",
+            "order": 5,
+            "display_floor": True
+        },
+        {
+            "name": "Cancelled",
+            "color": "#620D0DFF",
+            "status_type": "reservation",
+            "order": 6,
+            "display_floor": False
+        },
+        {
+            "name": "No-Show",
+            "color": "#620D0DFF",
+            "status_type": "reservation",
+            "order": 7,
+            "display_floor": False
+        },
+        {
+            "name": "Seated",
+            "color": "#620D0DFF",
+            "status_type": "seated",
+            "order": 8,
+            "display_floor": True
+        }
+    ]
+    for status in statuses:
+        search = json.loads(requests.get(f'{endpoint}/status/?search={status["label"]}').text)
+        if not search:
+            new_status = requests.post(f'{endpoint}/status/', data=status)
+            print(f'Creating {status["label"]} - {new_status.status_code}')
+    print("All Default Status Buttons Created.")
+
 
 
 def create_reservations(limit):
@@ -187,8 +254,8 @@ def create_reservations(limit):
             "guest": int(guest_id)
         }
 
-        updated_slot = requests.put(url + "slots/" + str(slot_id) + "/", data=obj)
-        print(url + "slots/" + str(slot_id))
+        updated_slot = requests.put(endpoint + "slots/" + str(slot_id) + "/", data=obj)
+        print(endpoint + "slots/" + str(slot_id))
         index += 1
 
 
@@ -196,6 +263,7 @@ def create_reservations(limit):
 # create_root_user()
 # create_restaurant()
 # create_slots(array=books)
-create_guests(1000)
+# create_guests(1000)
 # create_tables()
 # create_reservations(limit=2000)
+create_statuses()
