@@ -180,6 +180,7 @@ def create_tables():
         table = requests.post(f'{endpoint()}/api/v1/tablehost/tables/', data=table)
         print(table.content)
 
+
 def create_statuses():
     statuses = [
         {
@@ -245,7 +246,6 @@ def create_statuses():
             new_status = requests.post(f'{endpoint()}/api/v1/tablehost/status/', data=status)
             print(f'Creating {status["name"]} - {new_status.status_code}')
     print("All Default Status Buttons Created.")
-
 
 
 def create_reservations(limit):
