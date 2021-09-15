@@ -3,9 +3,16 @@ from datetime import timedelta, date
 import json
 from faker import Faker
 import random
+import passwords
 
-endpoint = "http://127.0.0.1:8000/api/v1/tablehost"
-#url = "https://bengarlock.com/api/v1/tablehost/"
+
+def endpoint():
+    env = passwords.return_environment()
+    if env == "production":
+        return "https://bengarlock.com"
+    return "http://127.0.0.1:8000"
+
+
 today = date.today()
 books = []
 
@@ -20,7 +27,7 @@ def create_root_user():
         "root_user": True,
         "slot": '1',
     }
-    requests.post(f'{endpoint}/guests/', obj)
+    requests.post(f'{endpoint()}/api/v1/tablehost/guests/', obj)
 
 
 def create_restaurant():
@@ -28,7 +35,7 @@ def create_restaurant():
     obj = {
         "name": 'ilili',
     }
-    requests.post(f'{endpoint}/restaurants/', obj)
+    requests.post(f'{endpoint()}/api/v1/tablehost/restaurants/', obj)
 
 
 def create_books(date_cap):
@@ -42,7 +49,7 @@ def create_books(date_cap):
             "restaurant_id": 1,
             "slots": [],
         }
-        book = requests.post(f'{endpoint}/books/', data=obj)
+        book = requests.post(f'{endpoint()}/api/v1/tablehost/books/', data=obj)
         r = book.content.decode('UTF-8')
         res = json.loads(r)
         books.append(res["id"])
@@ -72,7 +79,7 @@ def create_slots(array):
                     "book": book_id,
                     "guest": 1
                 }
-                data = requests.post(f'{endpoint}/slots/', data=obj)
+                data = requests.post(f'{endpoint()}/api/v1/tablehost/slots/', data=obj)
                 print(data.text)
 
 
@@ -106,7 +113,7 @@ def create_guests(data_cap):
             "active": True,
         }
 
-        guest = requests.post(f'{endpoint}/guests/', data=obj)
+        guest = requests.post(f'{endpoint()}/api/v1/tablehost/guests/', data=obj)
         print(guest.text)
         index += 1
 
@@ -170,7 +177,7 @@ def create_tables():
          "status": "done"},
     ]
     for table in tables:
-        table = requests.post(f'{endpoint}/tables/', data=table)
+        table = requests.post(f'{endpoint()}/api/v1/tablehost/tables/', data=table)
         print(table.content)
 
 def create_statuses():
@@ -233,10 +240,10 @@ def create_statuses():
         }
     ]
     for status in statuses:
-        search = json.loads(requests.get(f'{endpoint}/status/?search={status["label"]}').text)
+        search = json.loads(requests.get(f'{endpoint()}/api/v1/tablehost/status/?search={status["name"]}').text)
         if not search:
-            new_status = requests.post(f'{endpoint}/status/', data=status)
-            print(f'Creating {status["label"]} - {new_status.status_code}')
+            new_status = requests.post(f'{endpoint()}/api/v1/tablehost/status/', data=status)
+            print(f'Creating {status["name"]} - {new_status.status_code}')
     print("All Default Status Buttons Created.")
 
 
@@ -254,8 +261,8 @@ def create_reservations(limit):
             "guest": int(guest_id)
         }
 
-        updated_slot = requests.put(endpoint + "slots/" + str(slot_id) + "/", data=obj)
-        print(endpoint + "slots/" + str(slot_id))
+        updated_slot = requests.put(f'{endpoint()}/api/v1/tablehost/slots/{str(slot_id)}/', data=obj)
+        print(f'{endpoint()}/api/v1/tablehost/slots/{str(slot_id)}/')
         index += 1
 
 
