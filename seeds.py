@@ -17,19 +17,6 @@ today = date.today()
 books = []
 
 
-def create_root_user():
-    print("Creating Root User...")
-    obj = {
-        "first_name": '',
-        "last_name": '',
-        "phone_number": '',
-        "guest_notes": '',
-        "root_user": True,
-        "slot": '1',
-    }
-    requests.post(f'{endpoint()}/api/v1/tablehost/guests/', obj)
-
-
 def create_restaurant():
     print("Creating Restaurant...")
     obj = {
@@ -47,7 +34,6 @@ def create_books(date_cap):
         obj = {
             "date": date,
             "restaurant_id": 1,
-            "slots": [],
         }
         book = requests.post(f'{endpoint()}/api/v1/tablehost/books/', data=obj)
         r = book.content.decode('UTF-8')
@@ -56,31 +42,28 @@ def create_books(date_cap):
         index += 1
 
 
-def create_slots(array):
+def create_slots():
     print("Creating Slots...")
-    for book_id in array:
+    books = json.loads(requests.get(f'{endpoint()}/api/v1/tablehost/books/').text)
+
+    for book in books:
         times = [
             '5:00 PM', '5:15 PM', '5:30 PM', '5:45 PM',
             '6:00 PM', '6:15 PM', '6:30 PM', '6:45 PM',
             '7:00 PM', '7:15 PM', '7:30 PM', '7:45 PM',
             '8:00 PM', '8:15 PM', '8:30 PM', '8:45 PM',
         ]
-
         for time in times:
             party_sizes = [2, 2, 4, 6]
             for party_size in party_sizes:
-                obj = {
-                    "booked": False,
+                data = {
+                    "book": book["id"],
                     "time": time,
                     "party_size": party_size,
-                    "status": '',
-                    "reservation_notes"
-                    "tables": [],
-                    "book": book_id,
-                    "guest": 1
                 }
-                data = requests.post(f'{endpoint()}/api/v1/tablehost/slots/', data=obj)
-                print(data.text)
+
+                slot = json.loads(requests.post(f'{endpoint()}/api/v1/tablehost/slots/', data=data).text)
+                print(f'Creating Slot - {slot}')
 
 
 def create_guests(data_cap):
@@ -267,10 +250,10 @@ def create_reservations(limit):
 
 
 # create_books(100)
+create_slots()
 # create_root_user()
 # create_restaurant()
-# create_slots(array=books)
 # create_guests(1000)
 # create_tables()
 # create_reservations(limit=2000)
-create_statuses()
+# create_statuses()
