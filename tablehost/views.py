@@ -16,6 +16,8 @@ class BookView(viewsets.ModelViewSet):
 class SlotView(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["status"]
 
 
 class FloorView(viewsets.ModelViewSet):
