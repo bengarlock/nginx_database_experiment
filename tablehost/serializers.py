@@ -16,7 +16,7 @@ class StatusSerializer(serializers.ModelSerializer):
 
 class SlotSerializerWithGuest(serializers.ModelSerializer):
     guest = GuestSerializer(required=False)
-    status = StatusSerializer(required=False)
+    # status = StatusSerializer(required=False)
 
     class Meta:
         model = Slot

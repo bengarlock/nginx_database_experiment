@@ -14,7 +14,6 @@ def endpoint():
 
 
 today = date.today()
-books = []
 
 
 def create_restaurant():
@@ -30,16 +29,18 @@ def create_books(date_cap):
     index = 0
     while index <= date_cap:
         date = today + timedelta(days=index)
-        print(date)
-        obj = {
-            "date": date,
-            "restaurant_id": 1,
-        }
-        book = requests.post(f'{endpoint()}/api/v1/tablehost/books/', data=obj)
-        r = book.content.decode('UTF-8')
-        res = json.loads(r)
-        books.append(res["id"])
-        index += 1
+        response = json.loads(requests.get(f'{endpoint()}/api/v1/tablehost/books/?search={date}').text)
+        if not response:
+            obj = {
+                "date": date,
+                "restaurant_id": 1,
+            }
+            book = requests.post(f'{endpoint()}/api/v1/tablehost/books/', data=obj)
+            print(f'Creating Book - {book}')
+            index += 1
+        else:
+            print(f'Book {date} already exists')
+            index += 1
 
 
 def create_slots():
@@ -249,9 +250,8 @@ def create_reservations(limit):
         index += 1
 
 
-# create_books(100)
-create_slots()
-# create_root_user()
+create_books(100)
+# create_slots()
 # create_restaurant()
 # create_guests(1000)
 # create_tables()
