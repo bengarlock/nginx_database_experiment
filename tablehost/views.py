@@ -3,7 +3,6 @@ from .models import Book, Slot, Restaurant, Guest, Table, Status, Floor
 from .serializers import BookSerializer, SlotSerializer, RestaurantSerializer, GuestSerializer, TableSerializer, \
     StatusSerializer, FloorSerializer
 import django_filters.rest_framework
-from rest_framework.pagination import PageNumberPagination
 
 
 class BookView(viewsets.ModelViewSet):

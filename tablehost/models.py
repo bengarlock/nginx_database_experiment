@@ -62,7 +62,10 @@ class Table(models.Model):
     status = models.TextField(default='open')
     width = models.TextField(default='50px')
     height = models.TextField(default='50px')
+    style = ArrayField(models.CharField(max_length=15), default=list, blank=True)
     background_color = models.TextField(default='#9b9b9b')
     border = models.TextField(default='"2px solid gray"')
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
+
+
