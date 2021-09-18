@@ -10,12 +10,14 @@ class GuestSerializer(serializers.ModelSerializer):
 
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
+        ordering = ['-name']
         model = Status
         fields = '__all__'
 
 
 class SlotSerializerWithGuest(serializers.ModelSerializer):
     guest = GuestSerializer(required=False)
+
     # status = StatusSerializer(required=False)
 
     class Meta:
@@ -29,10 +31,19 @@ class SlotSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TableStyleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Table
+        fields = ['width', 'height', 'background_color', 'border']
+
+
 class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
-        fields = '__all__'
+        fields = ['id', 'class_name', 'name', 'status', 'style', 'floor', 'created_at', 'updated_at']
+        expandable_fields = {
+            'style': (TableStyleSerializer, {'many': True})
+        }
 
 
 class FloorSerializer(serializers.ModelSerializer):
@@ -40,8 +51,7 @@ class FloorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Floor
-        fields = '__all__'
-        fields = ['id', 'name', 'created_at', 'updated_at', 'tables']
+        fields = ['id', 'name', 'book', 'tables', 'created_at', 'updated_at']
 
 
 class BookSerializer(serializers.ModelSerializer):
