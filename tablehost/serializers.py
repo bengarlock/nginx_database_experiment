@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from .models import Book, Guest, Slot, Restaurant, Table, Status, Floor
 
@@ -32,14 +33,23 @@ class SlotSerializer(ModelSerializer):
 
 
 class TableSerializer(ModelSerializer):
+
+    style = serializers.SerializerMethodField('get_style')
+
     class Meta:
         model = Table
-        fields = '__all__'
+        fields = ('id', 'class_name', 'name', 'style')
+
+    def get_style(self, instance):
+        style = {
+            "width": instance.width,
+            "height": instance.height
+        }
+        return style
 
 
 class FloorSerializer(ModelSerializer):
     tables = TableSerializer(many=True, required=False)
-
     class Meta:
         model = Floor
         fields = ['id', 'name', 'book', 'tables', 'created_at', 'updated_at']

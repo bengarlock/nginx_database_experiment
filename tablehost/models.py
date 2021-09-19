@@ -53,6 +53,10 @@ class Floor(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 
+class TableManager(models.Manager):
+    def get_by_natural_key(self, width, height):
+        return self.get(width=width, height=height)
+
 class Table(models.Model):
     floor = models.ForeignKey(Floor, related_name='tables', on_delete=models.CASCADE, null=True)
     class_name = models.TextField(default="two-top-horizontal")
@@ -62,10 +66,15 @@ class Table(models.Model):
     status = models.TextField(default='open')
     width = models.TextField(default='50px')
     height = models.TextField(default='50px')
-    style = ArrayField(models.CharField(max_length=15), default=list, blank=True)
     background_color = models.TextField(default='#9b9b9b')
     border = models.TextField(default='"2px solid gray"')
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
+
+    objects = TableManager()
+
+    class Meta:
+        unique_together = [['width', 'height']]
+
 
 
